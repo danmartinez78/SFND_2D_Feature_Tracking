@@ -7,7 +7,8 @@ set(CMAKE_CXX_FLAGS, "${CXX_FLAGS}")
 
 project(camera_fusion)
 
-find_package(OpenCV 4.1 REQUIRED)
+set(OpenCV_DIR /home/daniel/SFND_2D_Feature_Tracking/opencv/lib/cmake/opencv4)
+find_package(OpenCV 4.1)
 
 include_directories(${OpenCV_INCLUDE_DIRS})
 link_directories(${OpenCV_LIBRARY_DIRS})
