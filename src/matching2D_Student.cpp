@@ -156,7 +156,7 @@ void detKeypointsHarris(vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis
                 }
             }
         } // eof loop over cols
-    } // eof loop over rows
+    }     // eof loop over rows
     t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
     cout << "Harris Corner detection with n=" << keypoints.size() << " keypoints in " << 1000 * t / 1.0 << " ms" << endl;
 
@@ -172,18 +172,49 @@ void detKeypointsHarris(vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis
     }
 }
 
-void detKeypointsModern(vector<cv::KeyPoint> &keypoints, cv::Mat &img, string dettectorType, bool bVis)
+void detKeypointsModern(vector<cv::KeyPoint> &keypoints, cv::Mat &img, string detectorType, bool bVis)
 {
     double t = (double)cv::getTickCount();
+    int threshold = 30; // difference between intensity of the central pixel and pixels of a circle around this pixel
+    bool bNMS = true;   // perform non-maxima suppression on keypoints
+
+    cv::Ptr<cv::FeatureDetector> detector;
+
+    if (detectorType.compare("FAST") == 0)
+    {
+        cv::FastFeatureDetector::DetectorType type = cv::FastFeatureDetector::TYPE_9_16; // TYPE_9_16, TYPE_7_12, TYPE_5_8
+        detector = cv::FastFeatureDetector::create(threshold, bNMS, type);
+    }
+    else if (detectorType.compare("BRISK"))
+    {
+        int octaves = 4;
+        float patterScales = 1.0;
+        detector = cv::BRISK::create(threshold, octaves, patterScales);
+    }
+    else if (detectorType.compare("ORB"))
+    {
+        detector = cv::ORB::create();
+    }
+    else if (detectorType.compare("AKAZE"))
+    {
+        detector = cv::AKAZE::create();
+    }
+    else
+    {
+        detector = cv::xfeatures2d::SIFT::create();
+    }
+
+    t = (double)cv::getTickCount();
+    detector->detect(img, keypoints);
     t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
-    cout << "Harris Corner detection with n=" << keypoints.size() << " keypoints in " << 1000 * t / 1.0 << " ms" << endl;
+    cout << detectorType << " with n= " << keypoints.size() << " keypoints in " << 1000 * t / 1.0 << " ms" << endl;
 
     // visualize results
     if (bVis)
     {
         cv::Mat visImage = img.clone();
         cv::drawKeypoints(img, keypoints, visImage, cv::Scalar::all(-1), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
-        string windowName = "Shi-Tomasi Corner Detector Results";
+        string windowName = "FAST Corner Detector Results";
         cv::namedWindow(windowName, 6);
         imshow(windowName, visImage);
         cv::waitKey(0);
