@@ -57,12 +57,14 @@ int main(int argc, const char *argv[])
         cv::cvtColor(img, imgGray, cv::COLOR_BGR2GRAY);
 
         //// STUDENT ASSIGNMENT
-        //// TODO TASK MP.1 -> replace the following code with ring buffer of size dataBufferSize
+        //// TASK MP.1 -> replace the following code with ring buffer of size dataBufferSize
 
         // push image into data frame buffer
         DataFrame frame;
         frame.cameraImg = imgGray;
         dataBuffer.push_back(frame);
+        if(dataBuffer.size() > dataBufferSize){dataBuffer.erase(dataBuffer.begin());}
+        // std::cout << (dataBuffer.size()) << std::endl;
 
         //// EOF STUDENT ASSIGNMENT
         cout << "#1 : LOAD IMAGE INTO BUFFER done" << endl;
