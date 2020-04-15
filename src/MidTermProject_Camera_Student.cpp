@@ -57,7 +57,7 @@ int main(int argc, const char *argv[])
         cv::cvtColor(img, imgGray, cv::COLOR_BGR2GRAY);
 
         //// STUDENT ASSIGNMENT
-        //// TASK MP.1 -> replace the following code with ring buffer of size dataBufferSize
+        //// TODO TASK MP.1 -> replace the following code with ring buffer of size dataBufferSize
 
         // push image into data frame buffer
         DataFrame frame;
@@ -74,7 +74,7 @@ int main(int argc, const char *argv[])
         string detectorType = "SHITOMASI";
 
         //// STUDENT ASSIGNMENT
-        //// TASK MP.2 -> add the following keypoint detectors in file matching2D.cpp and enable string-based selection based on detectorType
+        //// TODO TASK MP.2 -> add the following keypoint detectors in file matching2D.cpp and enable string-based selection based on detectorType
         //// -> HARRIS, FAST, BRISK, ORB, AKAZE, SIFT
 
         if (detectorType.compare("SHITOMASI") == 0)
@@ -88,8 +88,8 @@ int main(int argc, const char *argv[])
         //// EOF STUDENT ASSIGNMENT
 
         //// STUDENT ASSIGNMENT
-        //// TASK MP.3 -> only keep keypoints on the preceding vehicle
-
+        //// TODO TASK MP.3 -> only keep keypoints on the preceding vehicle
+        
         // only keep keypoints on the preceding vehicle
         bool bFocusOnVehicle = true;
         cv::Rect vehicleRect(535, 180, 180, 150);
@@ -121,7 +121,7 @@ int main(int argc, const char *argv[])
         /* EXTRACT KEYPOINT DESCRIPTORS */
 
         //// STUDENT ASSIGNMENT
-        //// TASK MP.4 -> add the following descriptors in file matching2D.cpp and enable string-based selection based on descriptorType
+        //// TODO TASK MP.4 -> add the following descriptors in file matching2D.cpp and enable string-based selection based on descriptorType
         //// -> BRIEF, ORB, FREAK, AKAZE, SIFT
 
         cv::Mat descriptors;
@@ -145,8 +145,8 @@ int main(int argc, const char *argv[])
             string selectorType = "SEL_NN";       // SEL_NN, SEL_KNN
 
             //// STUDENT ASSIGNMENT
-            //// TASK MP.5 -> add FLANN matching in file matching2D.cpp
-            //// TASK MP.6 -> add KNN match selection and perform descriptor distance ratio filtering with t=0.8 in file matching2D.cpp
+            //// TODO TASK MP.5 -> add FLANN matching in file matching2D.cpp
+            //// TODO TASK MP.6 -> add KNN match selection and perform descriptor distance ratio filtering with t=0.8 in file matching2D.cpp
 
             matchDescriptors((dataBuffer.end() - 2)->keypoints, (dataBuffer.end() - 1)->keypoints,
                              (dataBuffer.end() - 2)->descriptors, (dataBuffer.end() - 1)->descriptors,
