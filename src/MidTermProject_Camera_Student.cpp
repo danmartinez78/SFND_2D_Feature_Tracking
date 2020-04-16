@@ -99,7 +99,6 @@ int main(int argc, const char *argv[])
         cv::Rect vehicleRect(535, 180, 180, 150);
         if (bFocusOnVehicle)
         {
-            // ...
             vector<cv::KeyPoint> good_keypoints;
             for (int i = 0; i < keypoints.size(); i++){
                 if (vehicleRect.contains(keypoints[i].pt)){

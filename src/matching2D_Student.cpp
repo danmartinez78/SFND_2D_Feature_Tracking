@@ -50,8 +50,7 @@ void descKeypoints(vector<cv::KeyPoint> &keypoints, cv::Mat &img, cv::Mat &descr
     }
     else
     {
-
-        //...
+        // TODO add other descriptor extractors
     }
 
     // perform feature description
