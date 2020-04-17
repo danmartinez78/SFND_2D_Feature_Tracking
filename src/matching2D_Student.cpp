@@ -25,16 +25,20 @@ void matchDescriptors(std::vector<cv::KeyPoint> &kPtsSource, std::vector<cv::Key
     if (selectorType.compare("SEL_NN") == 0)
     { // nearest neighbor (best match)
 
-        matcher->match(descSource, descRef, matches); // Finds the best match for each descriptor in desc1
+        matcher->match(descSource, descRef, matches);
     }
     else if (selectorType.compare("SEL_KNN") == 0)
     { // k nearest neighbors (k=2)
 
-        std::vector< std::vector<cv::DMatch> > knn_matches;
-        matcher->knnMatch(descSource, descRef, knn_matches, 2 );
-        for(int i=0; i<knn_matches.size(); i++)
+        std::vector<std::vector<cv::DMatch>> knn_matches;
+        matcher->knnMatch(descSource, descRef, knn_matches, 2);
+        // apply ratio test
+        for (size_t i = 0; i < knn_matches.size(); i++)
         {
-            matches.push_back(knn_matches[i][0]);
+            if (knn_matches[i][0].distance < 0.8 * knn_matches[i][1].distance)
+            {
+                matches.push_back(knn_matches[i][0]);
+            }
         }
     }
 }
@@ -52,7 +56,8 @@ void descKeypoints(vector<cv::KeyPoint> &keypoints, cv::Mat &img, cv::Mat &descr
         float patternScale = 1.0f; // apply this scale to the pattern used for sampling the neighbourhood of a keypoint.
 
         extractor = cv::BRISK::create(threshold, octaves, patternScale);
-    }else if (descriptorType.compare("BRIEF")) //add other descriptor extractors (BRIEF, ORB, FREAK, AKAZE and SIFT)
+    }
+    else if (descriptorType.compare("BRIEF")) //add other descriptor extractors (BRIEF, ORB, FREAK, AKAZE and SIFT)
     {
         extractor = cv::xfeatures2d::BriefDescriptorExtractor::create();
     }
